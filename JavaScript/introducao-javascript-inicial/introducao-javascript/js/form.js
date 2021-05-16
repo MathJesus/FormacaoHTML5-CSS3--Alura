@@ -9,6 +9,13 @@ botaoAdicionar.addEventListener("click", function(event) {
     // Cria a tr e a td do paciente 
     
     var pacienteTr = montaTr(paciente);
+
+    var erros = validaPaciente(paciente);
+    console.log(erros);
+    if (erros.length > 0) {
+        exibeMensagensdeErro(erros);
+        return;
+    }
     
     // adicionando o paciente na tabela
     var tabela = document.querySelector("#tabela-pacientes");
@@ -17,7 +24,23 @@ botaoAdicionar.addEventListener("click", function(event) {
 
     //reseta o formulario
     form.reset();
+    var mensagensErro = document.querySelector("#mensagens-erro");
+    mensagensErro.innerHTML = ""
 });
+
+function exibeMensagensdeErro(erros) {
+    var ul = document.querySelector("#mensagens-erro");
+
+    ul.innerHTML = "";
+    
+    erros.forEach(function(erro) {
+        var li = document.createElement("li");
+        li.textContent = erro;
+        ul.appendChild(li);
+    });
+        
+    
+}
 
 
 
@@ -53,4 +76,34 @@ function montaTd(dado, classe) {
     td.classList.add(classe);
     
     return td;
+}
+
+function validaPaciente(paciente) {
+
+    var erros = []
+
+    if(paciente.nome.length == 0){
+        erros.push("O nome não pode ser nulo");
+    }
+
+    if(!validaPeso(paciente.peso)) {
+        erros.push("Peso é Inválido");
+    }    
+    if(!ValidaAltura(paciente.altura)) {
+        erros.push("Altura é invalida !");
+    }
+
+
+    if(paciente.gordura.length == 0){
+        erros.push("A Gordura não pode ser nula");
+    }
+
+    if(paciente.peso.length == 0) {
+        erros.push("O Peso não pode ser nulo");
+    }
+
+    if(paciente.altura.length == 0) {
+        erros.push("A Altura não pode ser nulo");
+    }
+    return erros;
 }
